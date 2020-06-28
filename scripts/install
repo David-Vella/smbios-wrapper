@@ -1,0 +1,4 @@
+#!/bin/bash
+
+install -D tm.sh $1/usr/bin/tm
+ 
