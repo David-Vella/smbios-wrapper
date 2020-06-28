@@ -1,0 +1,16 @@
+# Maintainer: David Vella
+pkgname=smbios-wrapper
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="A wrapper to improve smbios-thermal-ctl cli interface"
+arch=('any')
+url="https://github.com/David-Vella/smbios-wrapper"
+license=('MIT')
+depends=('libsmbios' 'bash')
+source=("git+https://github.com/David-Vella/smbios-wrapper.git")
+md5sums=('SKIP')
+
+package() {
+	cd "${srcdir}/${pkgname}/"
+	./scripts/install "$pkgdir"
+}

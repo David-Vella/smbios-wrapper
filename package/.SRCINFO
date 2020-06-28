@@ -1,0 +1,14 @@
+pkgbase = smbios-wrapper
+	pkgdesc = A wrapper to improve smbios-thermal-ctl cli interface
+	pkgver = 1.0.0
+	pkgrel = 1
+	url = https://github.com/David-Vella/smbios-wrapper
+	arch = any
+	license = MIT
+	depends = libsmbios
+	depends = bash
+	source = git+https://github.com/David-Vella/smbios-wrapper.git
+	md5sums = SKIP
+
+pkgname = smbios-wrapper
+
