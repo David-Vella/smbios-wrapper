@@ -11,14 +11,23 @@ if [[ $1 == "-l" ]]; then
 
 elif [[ $1 == "-s" ]]; then
 
+    if [[ $EUID -ne 0 ]]; then 
+        echo "error: you cannot perform this operation unless you are root"
+        exit 1
+    fi
+
     if [[ $2 =~ ^[Bb][alanced]*$ ]]; then
         REQUESTED="balanced"
+
     elif [[ $2 =~ ^[Cc][ool]*$ ]]; then
         REQUESTED="cool-bottom"
+
     elif [[ $2 =~ ^[Qq][uiet]*$ ]]; then
         REQUESTED="quiet"
+
     elif [[ $2 =~ ^[Pp][erformance]*$ ]]; then
         REQUESTED="performance"
+
     else
         echo "error: invalid mode"
         exit 1
@@ -37,6 +46,11 @@ elif [[ $1 == "-c" ]]; then
             fi
         done
     }
+
+    if [[ $EUID -ne 0 ]]; then 
+        echo "error: you cannot perform this operation unless you are root"
+        exit 1
+    fi
 
     MODE=$(parse < <(smbios-thermal-ctl -g))
 
