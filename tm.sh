@@ -6,15 +6,15 @@
 # David Vella, June 2020
 # 
 
+if [[ $EUID -ne 0 ]]; then 
+    echo "error: you cannot perform this operation unless you are root"
+    exit 1
+fi
+
 if [[ $1 == "-l" ]]; then
     echo "Available Modes: balanced, cool, quiet, performance"
 
 elif [[ $1 == "-s" ]]; then
-
-    if [[ $EUID -ne 0 ]]; then 
-        echo "error: you cannot perform this operation unless you are root"
-        exit 1
-    fi
 
     if [[ $2 =~ ^[Bb][alanced]*$ ]]; then
         REQUESTED="balanced"
@@ -46,11 +46,6 @@ elif [[ $1 == "-c" ]]; then
             fi
         done
     }
-
-    if [[ $EUID -ne 0 ]]; then 
-        echo "error: you cannot perform this operation unless you are root"
-        exit 1
-    fi
 
     MODE=$(parse < <(smbios-thermal-ctl -g))
 
