@@ -6,13 +6,30 @@
 # David Vella, June 2020
 # 
 
+parse() {
+    local flag=
+
+    while read line; do 
+        if [[ $line =~ ^(Balanced|Cool Bottom|Quiet|Performance)$ ]]; then
+            if [ $flag ]; then
+                echo -n ", $line"
+            else
+                echo -n "$line"
+                flag=true
+            fi
+        fi
+    done
+}
+
 if [[ $EUID -ne 0 ]]; then 
     echo "error: you cannot perform this operation unless you are root"
     exit 1
 fi
 
 if [[ $1 == "-l" ]]; then
-    echo "Available Modes: balanced, cool, quiet, performance"
+    MODES=$(parse < <(smbios-thermal-ctl -i))
+
+    echo "Available Modes: $MODES"
 
 elif [[ $1 == "-s" ]]; then
 
@@ -38,15 +55,6 @@ elif [[ $1 == "-s" ]]; then
     echo "Thermal Mode Set Successfully to: $REQUESTED"
 
 elif [[ $1 == "-c" ]]; then
-
-    parse() {
-        while read line; do 
-            if [[ $line =~ ^(Balanced|Cool Bottom|Quiet|Performance)$ ]]; then
-                echo $line
-            fi
-        done
-    }
-
     MODE=$(parse < <(smbios-thermal-ctl -g))
 
     echo "Current Thermal Mode: $MODE"
