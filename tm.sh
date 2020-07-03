@@ -19,6 +19,8 @@ parse() {
             fi
         fi
     done
+
+    echo 
 }
 
 if [[ $EUID -ne 0 ]]; then 
@@ -27,9 +29,9 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 if [[ $1 == "-l" ]]; then
-    MODES=$(parse < <(smbios-thermal-ctl -i))
+    echo -n "Available Modes: "
 
-    echo "Available Modes: $MODES"
+    parse < <(smbios-thermal-ctl -i)
 
 elif [[ $1 == "-s" ]]; then
 
@@ -55,9 +57,9 @@ elif [[ $1 == "-s" ]]; then
     echo "Thermal Mode Set Successfully to: $REQUESTED"
 
 elif [[ $1 == "-c" ]]; then
-    MODE=$(parse < <(smbios-thermal-ctl -g))
+    echo -n "Current Thermal Mode: "
 
-    echo "Current Thermal Mode: $MODE"
+    parse < <(smbios-thermal-ctl -g)
 
 else
     echo "usage: tm [-l] [-s <mode>] [-c]"
