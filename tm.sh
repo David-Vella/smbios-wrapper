@@ -6,23 +6,6 @@
 # David Vella, June 2020
 #
 
-function check_perm {
-    if [ $EUID -ne 0 ]; then 
-        echo "error: you cannot perform this operation unless you are root"
-        exit 1
-    fi
-}
-
-function check_args {
-    if [ $1 -lt $2 ]; then
-        echo "error: to few arguments"
-        exit 1
-    elif [ $1 -gt $2 ]; then
-        echo "error: to many arguments"
-        exit 1
-    fi
-}
-
 function find_modes {
     local flag=0
 
@@ -69,15 +52,35 @@ function get_mode {
     done
 }
 
-# ==================== Main ==================== #
+function check_perm {
+    if [ $EUID -ne 0 ]; then 
+        echo "error: you cannot perform this operation unless you are root"
+        exit 1
+    fi
+}
 
-if [ -z "$(find_modes)" ]; then
-    echo "error: failed to find any available thermal modes"
-    exit 1
-fi
+function check_args {
+    if [ $1 -lt $2 ]; then
+        echo "error: to few arguments"
+        exit 1
+    elif [ $1 -gt $2 ]; then
+        echo "error: to many arguments"
+        exit 1
+    fi
+}
+
+function check_sys {
+    if [ -z "$(find_modes)" ]; then
+        echo "error: failed to find any available thermal modes"
+        exit 1
+    fi
+}
+
+# ==================== Main ==================== #
 
 if [ "$1" == "-l" ]; then
     check_perm
+    check_sys
     check_args $# 1
 
     MODES=$(print_modes)
@@ -85,6 +88,7 @@ if [ "$1" == "-l" ]; then
 
 elif [ "$1" == "-s" ]; then
     check_perm
+    check_sys
     check_args $# 2
 
     OLD=$(get_mode)
@@ -110,6 +114,7 @@ elif [ "$1" == "-s" ]; then
 
 elif [ "$1" == "-c" ]; then
     check_perm
+    check_sys
     check_args $# 1
 
     CURRENT=$(get_mode)
