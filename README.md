@@ -1,6 +1,6 @@
 # About
 
-A wrapper for the `smbios-thermal-ctl` command in `libsmbios` that shortens common commands.
+A wrapper for the `smbios-thermal-ctl` command in `libsmbios` that simplifies common commands.
 
 New:
 ```bash

@@ -23,7 +23,9 @@ function find_modes {
 function print_modes {
     local flag=0
 
-    find_modes | while read line; do 
+    echo -n "Available modes: "
+
+    for line in $(find_modes); do 
         if [ $flag -eq 0 ]; then
             flag=1
             echo -n $line
@@ -32,6 +34,14 @@ function print_modes {
         fi
     done
     echo
+}
+
+function compare_modes {
+    if [[ "${1,,}" == "${2,,}"* ]]; then
+        return $(true)
+    else
+        return $(false)
+    fi
 }
 
 function get_mode {
@@ -43,13 +53,25 @@ function get_mode {
         elif [ -z "$line" ]; then
             flag=0
         elif [ $flag -ne 0 ]; then
-            find_modes | while read mode; do
+            for mode in $(find_modes); do
                 if [ "${line/ /-}" == "$mode" ]; then
                     echo $mode
                 fi
             done
         fi
     done
+}
+
+function check_mode {
+    local requested=$1
+
+    for mode in $(find_modes); do
+        if compare_modes $mode $requested; then
+            return $(true)
+        fi
+    done
+
+    return $(false)
 }
 
 function check_perm {
@@ -83,32 +105,38 @@ if [ "$1" == "-l" ]; then
     check_sys
     check_args $# 1
 
-    MODES=$(print_modes)
-    echo "Available Modes: $MODES"
+    print_modes
 
 elif [ "$1" == "-s" ]; then
     check_perm
     check_sys
     check_args $# 2
 
-    OLD=$(get_mode)
+    REQUESTED_MODE=$2
+    OLD_MODE=$(get_mode)
 
-    if [[ "${OLD,,}" == "${2,,}"* ]]; then
-        echo "error: Thermal Mode Already Set to $OLD"
+    if ! check_mode $REQUESTED_MODE; then
+        echo "error: Invalid Thermal Mode"
+        print_modes
         exit 1
     fi
 
-    find_modes | while read mode; do
-        if [[ "${mode,,}" == "${2,,}"* ]]; then
-            smbios-thermal-ctl --set-thermal-mode=$mode > /dev/null
+    if compare_modes $OLD_MODE $REQUESTED_MODE; then
+        echo "error: Thermal Mode Already Set to: $OLD_MODE"
+        exit 1
+    fi
+
+    for mode in $(find_modes); do
+        if compare_modes $mode $REQUESTED_MODE; then
+            smbios-thermal-ctl --set-thermal-mode=$mode &> /dev/null
             echo "Thermal Mode Set Successfully to: $mode"
         fi
     done
 
-    NEW=$(get_mode)
+    NEW_MODE=$(get_mode)
 
-    if [ "$OLD" == "$NEW" ]; then
-        echo "error: Failed to Set Thermal Mode to $2"
+    if [ "$OLD_MODE" == "$NEW_MODE" ]; then
+        echo "error: Failed to Set Thermal Mode to: $REQUESTED_MODE"
         exit 1
     fi
 
