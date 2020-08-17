@@ -4,9 +4,9 @@ A wrapper for the `smbios-thermal-ctl` command in `libsmbios` that simplifies co
 
 New:
 ```bash
-sudo tm -l   # list available thermal modes
-sudo tm -c   # print current thermal mode
-sudo tm -s p # set thermal mode to performance
+sudo tmode -l   # list available thermal modes
+sudo tmode -c   # print current thermal mode
+sudo tmode -s p # set thermal mode to performance
 ```
 
 Old:

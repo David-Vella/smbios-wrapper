@@ -150,13 +150,13 @@ elif [ "$1" == "-c" ]; then
 
 elif [ "$1" == "-h" ]; then
     echo "A wrapper to improve the smbios-thermal-ctl interface"
-    echo "  tm -c         :  print the current thermal mode"
-    echo "  tm -l         :  list available thermal modes"
-    echo "  tm -s <mode>  :  set the thermal mode"
-    echo "  tm -h         :  display this help screen"
+    echo "  tmode -c         :  print the current thermal mode"
+    echo "  tmode -l         :  list available thermal modes"
+    echo "  tmode -s <mode>  :  set the thermal mode"
+    echo "  tmode -h         :  display this help screen"
 
 else
-    echo "usage: tm < -l | -s <mode> | -c >"
-    echo "use tm -h for help"
+    echo "usage: tmode < -l | -s <mode> | -c >"
+    echo "use tmode -h for help"
     exit 1
 fi

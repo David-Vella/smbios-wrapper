@@ -1,4 +1,4 @@
 #!/bin/bash
 
-install -D tm.sh $1/usr/bin/tm
+install -D tmode.sh $1/usr/bin/tmode
  
