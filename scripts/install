@@ -1,4 +1,4 @@
 #!/bin/bash
 
-install -D tmode.sh $1/usr/bin/tmode
+install -Dm755 tmode.sh $1/usr/bin/tmode
  
