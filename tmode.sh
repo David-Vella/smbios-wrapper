@@ -155,6 +155,9 @@ elif [ "$1" == "-h" ]; then
     echo "  tmode -s <mode>  :  set the thermal mode"
     echo "  tmode -h         :  display this help screen"
 
+elif [ "$1" == "-v" ]; then
+    echo "tmode version 1.1.0"
+
 else
     echo "usage: tmode < -l | -s <mode> | -c >"
     echo "use tmode -h for help"

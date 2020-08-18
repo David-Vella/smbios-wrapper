@@ -16,6 +16,6 @@ sudo smbios-thermal-ctl -g
 sudo smbios-thermal-ctl --set-thermal-mode=Performance
 ```
 
-Install on Arch Linux using the included `PKGBUILD`
+Install on Arch Linux using the `PKGBUILD` in the installation files under [releases](https://github.com/David-Vella/smbios-wrapper/releases)
 
 David Vella, June 2020
